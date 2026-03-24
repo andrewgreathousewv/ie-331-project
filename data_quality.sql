@@ -66,3 +66,45 @@ WITH null_checks AS (
 )
 SELECT * FROM null_checks;
 #test
+# Orphaned foreign keys
+# id links tables (Ex. customer_id)
+# A row that is orphaned means one table references an id that has no match in another table
+# Like the previous part in question one, I used code to find orphaned foreign keys in customer_id,order_id,product_id, and seller_id.
+# Left joins keeps everything from the left table, even without a match in the right table
+WITH orphan_customer_id AS (
+    SELECT o.customer_id
+    FROM orders as o
+    LEFT JOIN customers as c
+        ON o.customer_id = c.customer_id
+    WHERE c.customer_id IS NULL
+),
+
+orphan_order_id AS (
+    SELECT oi.order_id
+    FROM order_items as oi
+    LEFT JOIN orders as o
+        ON oi.order_id = o.order_id
+    WHERE o.order_id IS NULL
+),
+
+orphan_product_id AS (
+    SELECT oi.product_id
+    FROM order_items as oi
+    LEFT JOIN products as p
+        ON oi.product_id = p.product_id
+    WHERE p.product_id IS NULL
+),
+
+orphan_seller_id AS (
+    SELECT oi.seller_id
+    FROM order_items as oi
+    LEFT JOIN sellers as s
+        ON oi.seller_id = s.seller_id
+    WHERE s.seller_id IS NULL
+)
+
+SELECT
+    (SELECT COUNT(*) FROM orphan_customer_id) AS orphan_customer_id,
+    (SELECT COUNT(*) FROM orphan_order_id) AS orphan_order_id,
+    (SELECT COUNT(*) FROM orphan_product_id) AS orphan_product_id,
+    (SELECT COUNT(*) FROM orphan_seller_id) AS orphan_seller_id;
