@@ -180,3 +180,4 @@ select
     (select COUNT(*) from duplicate_products) as duplicate_products,
     (select COUNT(*) from duplicate_sellers) as duplicate_sellers,
     (select COUNT(*) from duplicate_reviews) as duplicate_reviews;
+#End question one
