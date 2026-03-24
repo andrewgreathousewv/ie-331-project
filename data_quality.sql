@@ -34,7 +34,7 @@ WITH null_checks AS (
         SUM(CASE WHEN order_id IS NULL THEN 1 ELSE 0 END) as  null_order_id,
         SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END) as  null_customer_id,
         0 as null_product_id,
-        0 as nul_seller_id
+        0 as null_seller_id
     from orders
   UNION ALL
     select
@@ -52,14 +52,14 @@ WITH null_checks AS (
         SUM(CASE WHEN product_id IS NULL THEN 1 ELSE 0 END),
         0 as null_order_id,
         0 as null_customer_id,
-        0 as seller_id
+        0 as null_seller_id
     from products
     UNION ALL
     select
       'sellers',
       COUNT(*),
        SUM(CASE WHEN seller_id IS NULL THEN 1 ELSE 0 END),
-       0 as nuller_order_id,
+       0 as null_order_id,
        0 as null_customer_id,
        0 as null_product_id
         from sellers
