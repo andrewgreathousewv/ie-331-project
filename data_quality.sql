@@ -1,6 +1,7 @@
 #Data quality audit file
 # Using Olist data set
 # Row counts per table
+# Use Count (*) command to count all rows in the result set
 WITH row_counts AS (
   SELECT 'category_translation', COUNT(*) FROM category_translation
     UNION ALL
@@ -21,3 +22,4 @@ WITH row_counts AS (
     SELECT 'sellers', COUNT(*) FROM sellers
     )
 SELECT * FROM row_counts;
+# NULL rates for key columnns
