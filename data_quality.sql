@@ -62,3 +62,4 @@ WITH null_checks AS (
         from sellers
 )
 SELECT * FROM null_checks;
+#test
