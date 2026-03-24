@@ -23,3 +23,42 @@ WITH row_counts AS (
     )
 SELECT * FROM row_counts;
 # NULL rates for key columnns
+# Check for missing values in key columns
+# Use NULL to find data that was not recorded or missing, count how many times it occured.
+# The group went forward with using key columns- order id,customer, id, and order status
+# We attempted to put product id instead of order status but had to stay with selecting from "orders"
+# Columns headers are considered our key columns
+WITH null_checks AS (
+    select
+        'orders' AS table_name,
+        COUNT(*) AS total_rows,
+        SUM(CASE WHEN order_id IS NULL THEN 1 ELSE 0 END) as  null_order_id,
+        SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END) as  null_customer_id,
+        SUM(CASE WHEN order_status IS NULL THEN 1 ELSE 0 END) as null_order_status
+    from orders
+  UNION ALL
+    select
+        'customers',
+        COUNT(*),
+        SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN customer_unique_id IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN customer_zip_code_prefix IS NULL THEN 1 ELSE 0 END)
+    from customers
+    UNION ALL
+    select
+        'products',
+        COUNT(*),
+        SUM(CASE WHEN product_id IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN product_category_name IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN product_weight_g IS NULL THEN 1 ELSE 0 END)
+    from products
+    UNION ALL
+    select
+      'sellers',
+      COUNT(*),
+       SUM(CASE WHEN seller_id IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN seller_city IS NULL THEN 1 ELSE 0 END),
+        SUM(CASE WHEN seller_state IS NULL THEN 1 ELSE 0 END)
+        from sellers
+)
+SELECT * FROM null_checks;
