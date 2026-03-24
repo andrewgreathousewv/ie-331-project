@@ -66,7 +66,3 @@ WITH null_checks AS (
 )
 SELECT * FROM null_checks;
 #test
-# Orphaned foreign keys
-# id links tables (Ex. customer_id)
-# A row that is orphaned means one table references an id that has no match in another table
-#
