@@ -138,3 +138,45 @@ from all_dates
 left join order_dates
     on all_dates.date = order_dates.date
 where order_dates.date is null;
+# Duplicate Detention
+# To detect a duplicate, we want to find how many times the same ID appears in key tables
+# In the other parts of question one, I mostly looked at customers, products, sellers, and orders tables
+# For this part I ran the query before putting in the order_reviews table into the code.
+# Output showed that dupilcates were found in the order_reviews, so I considered it a key table with the other 4.
+with duplicate_orders as (
+    select order_id, COUNT(*) as count
+    from orders
+    group by order_id
+    having COUNT(*) > 1
+),
+duplicate_customers as (
+    select customer_id, COUNT(*) as count
+    from customers
+    group by customer_id
+    having COUNT(*) > 1
+),
+duplicate_products as (
+    select product_id, COUNT(*) as count
+    from products
+     group by product_id
+    having COUNT(*) > 1
+),
+duplicate_sellers as (
+    select seller_id, COUNT(*) as count
+    from sellers
+    group by seller_id
+    HAVING COUNT(*) > 1
+),
+duplicate_reviews AS (
+    select review_id, COUNT(*) as count
+    from order_reviews
+    group BY review_id
+    HAVING COUNT(*) > 1
+)
+
+select
+    (select COUNT(*) from duplicate_orders) as duplicate_orders,
+    (select COUNT(*) from duplicate_customers) as duplicate_customers,
+    (select COUNT(*) from duplicate_products) as duplicate_products,
+    (select COUNT(*) from duplicate_sellers) as duplicate_sellers,
+    (select COUNT(*) from duplicate_reviews) as duplicate_reviews;
