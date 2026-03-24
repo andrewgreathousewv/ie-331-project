@@ -41,3 +41,13 @@ classified AS (
         END AS abc_class
     FROM ranked_products
 )
+
+#4 Tier Summary
+SELECT
+    abc_class,
+    COUNT(*)               AS product_count,
+    ROUND(SUM(revenue), 2) AS total_revenue,
+    ROUND(SUM(pct_of_revenue), 2) AS pct_of_total_revenue
+FROM classified
+GROUP BY abc_class
+ORDER BY abc_class;
