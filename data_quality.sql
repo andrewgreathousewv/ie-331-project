@@ -108,3 +108,33 @@ SELECT
     (SELECT COUNT(*) FROM orphan_order_id) AS orphan_order_id,
     (SELECT COUNT(*) FROM orphan_product_id) AS orphan_product_id,
     (SELECT COUNT(*) FROM orphan_seller_id) AS orphan_seller_id;
+# Date Range coverage and gaps
+# To find date range, find first and last order dates
+# Missing days is counted as the total gap days from start date to end date
+# Gap days are considered days with no orders
+with date_range as (
+    select
+        min(date(order_purchase_timestamp)) as start_date,
+        max(date(order_purchase_timestamp)) as end_date,
+    from orders
+),
+all_dates as (
+    select *
+    from generate_series (
+        (select start_date from date_range),
+        (select end_date from date_range),
+        interval 1 day
+    ) as t(date)
+),
+order_dates as (
+    select distinct date(order_purchase_timestamp) as date
+    from orders
+)
+select
+    (select start_date from date_range) as start_date,
+    (select end_date from date_range) as end_date,
+    count(*) as missing_days
+from all_dates
+left join order_dates
+    on all_dates.date = order_dates.date
+where order_dates.date is null;
