@@ -1,6 +1,8 @@
 #Question: Which products fall into A, B, and C categories based on revenue contribution?
 
 #1 Compute Revenue
+# adds all order_items and adds them up, groupig by product
+# It also join to product table to grab the category name
 WITH product_revenue AS (
     SELECT 
         oi.product_id,
@@ -11,3 +13,14 @@ WITH product_revenue AS (
     LEFT JOIN products p ON oi.product_id = p.product_id
     GROUP BY oi.product_id, p.product_category_name
 ),
+
+#2 Calculate cummulative revenue (using windows function)
+# Takes revenue list and adds two new columsn with winows function 
+ranked_products AS (
+    SELECT *,
+        SUM(revenue) OVER ()                                                        AS total_revenue,
+        SUM(revenue) OVER (ORDER BY revenue DESC ROWS BETWEEN UNBOUNDED PRECEDING 
+                                                          AND CURRENT ROW)          AS cumulative_revenue
+    FROM product_revenue
+),
+
