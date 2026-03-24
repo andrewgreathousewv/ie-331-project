@@ -31,4 +31,5 @@ Row counts per table just provided the quantity of the data. Quality or accurate
 # Question 2 
 
 **Query 1: Customer Retention**
-This query investigated whether customers return to the shop again after their first purchase. The hard part of this query was that Olist gives every order a new customer_id, so if you join that you'll never find a repeating customer. To fix this I had to use the help of claude to join through the customers table to get customer_unique_id, which tracks the customer through new orders. Once that was solved, we flagged whether each customer 
+**Business question: Question: What percentage of customers return within 30, 60, and 90 days of their first purchase?**
+This query investigated whether customers return to the shop again after their first purchase. The hard part of this query was that Olist gives every order a new customer_id, so if you join that you'll never find a repeating customer. To fix this I had to use the help of claude to join through the customers table to get customer_unique_id, which tracks the customer through new orders. Once that was solved, we flagged whether each customer placed more orders withing 30,60, and 90 days of their first purchase. The results were 0.68, 1.03, and 1.24 percent, which seems low but makes sense in 
