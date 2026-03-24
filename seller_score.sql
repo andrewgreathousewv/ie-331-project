@@ -4,7 +4,8 @@
 WITH revenue AS (
     SELECT 
         seller_id,
-        SUM(price) AS total_revenue
+        SUM(price)  AS total_revenue,
+        COUNT(*)    AS total_items_sold
     FROM order_items
     GROUP BY seller_id
 ),
@@ -23,6 +24,7 @@ delivery AS (
     FROM orders o
     JOIN order_items oi ON o.order_id = oi.order_id
     WHERE o.order_delivered_customer_date IS NOT NULL
+      AND o.order_status = 'delivered'
     GROUP BY oi.seller_id
 ),
 
@@ -67,11 +69,22 @@ combined AS (
 # Who is the best seller
 ranked AS (
     SELECT *,
-        RANK() OVER (ORDER BY total_revenue DESC) AS revenue_rank,
-        RANK() OVER (ORDER BY avg_review DESC) AS review_rank
+        RANK() OVER (ORDER BY total_revenue DESC)  AS revenue_rank,
+        RANK() OVER (ORDER BY on_time_rate DESC)   AS delivery_rank,
+        RANK() OVER (ORDER BY avg_review DESC)     AS review_rank,
+        RANK() OVER (ORDER BY cancel_rate ASC)     AS cancel_rank,
+        # Composite score: lower is better (average of all four ranks)
+        ROUND(
+            (
+                RANK() OVER (ORDER BY total_revenue DESC) +
+                RANK() OVER (ORDER BY on_time_rate DESC) +
+                RANK() OVER (ORDER BY avg_review DESC) +
+                RANK() OVER (ORDER BY cancel_rate ASC)
+            ) / 4.0, 1
+        ) AS composite_score
     FROM combined
 )
-  
+
 SELECT *
 FROM ranked
-ORDER BY revenue_rank;
+ORDER BY composite_score ASC;
