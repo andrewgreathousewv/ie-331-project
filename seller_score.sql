@@ -1,5 +1,6 @@
 #Which seller performs best 
   #1 Compute Rev.
+  #Total amount of money each seller brought in
 WITH revenue AS (
     SELECT 
         seller_id,
@@ -8,7 +9,8 @@ WITH revenue AS (
     GROUP BY seller_id
 ),
   
-#Measure Delivery
+#2 Measure Delivery
+# What percentage of the sellers orders arrive on time
 delivery AS (
     SELECT 
         oi.seller_id,
@@ -24,7 +26,8 @@ delivery AS (
     GROUP BY oi.seller_id
 ),
 
-#Review Scores (Aggregate)
+#3 Review Scores (Aggregate)
+#  What is the sellers average satisfaction rate from customers
 reviews AS (
     SELECT 
         oi.seller_id,
@@ -34,7 +37,8 @@ reviews AS (
     GROUP BY oi.seller_id
 ),
 
-#Cancellation Rate
+#4 Cancellation Rate
+# What percentage of the sellers orders get cancelled
 cancellations AS (
     SELECT 
         oi.seller_id,
@@ -43,7 +47,9 @@ cancellations AS (
     JOIN order_items oi ON o.order_id = oi.order_id
     GROUP BY oi.seller_id
 ),
-#Combine
+  
+#5 Combine
+# Put all seller performance stats into one table
 combined AS (
     SELECT 
         r.seller_id,
@@ -57,7 +63,8 @@ combined AS (
     LEFT JOIN cancellations c ON r.seller_id = c.seller_id
 ),
 
-#Rank
+#6 Rank
+# Who is the best seller
 ranked AS (
     SELECT *,
         RANK() OVER (ORDER BY total_revenue DESC) AS revenue_rank,
