@@ -16,6 +16,8 @@ WITH delivery_times AS (
 
 # 2 Compute actual delivery
 # Find the actual vs. estimated delivery days using DATE_DIFF from purchase timestamp to each respective date
+# And 3 Aggregate by state
+# Calculate actual vs estimated days, avg delays, and % orders that come late
 comparison AS (
     SELECT 
         customer_state,
@@ -29,3 +31,6 @@ comparison AS (
     GROUP BY customer_state
 )
 
+SELECT *
+FROM comparison
+ORDER BY avg_delay_days DESC;
