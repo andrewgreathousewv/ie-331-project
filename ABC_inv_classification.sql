@@ -24,3 +24,20 @@ ranked_products AS (
     FROM product_revenue
 ),
 
+#3 Assign A,B, and C tiers based on % contribution
+# Divides each product by grand total to get a % then applies tier logic
+classified AS (
+    SELECT
+        product_id,
+        product_category_name,
+        revenue,
+        units_sold,
+        ROUND(revenue / total_revenue * 100, 4)             AS pct_of_revenue,
+        ROUND(cumulative_revenue / total_revenue * 100, 4)  AS cumulative_pct,
+        CASE 
+            WHEN cumulative_revenue / total_revenue <= 0.80 THEN 'A'
+            WHEN cumulative_revenue / total_revenue <= 0.95 THEN 'B'
+            ELSE 'C'
+        END AS abc_class
+    FROM ranked_products
+)
