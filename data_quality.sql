@@ -3,7 +3,7 @@
 # Row counts per table
 # Use Count (*) command to count all rows in the result set
 WITH row_counts AS (
-  SELECT 'category_translation', COUNT(*) FROM category_translation
+  SELECT 'category_translation' AS table_name, COUNT(*) AS row_count FROM category_translation
     UNION ALL
     SELECT 'customers', COUNT(*) FROM customers
     UNION ALL
