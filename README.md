@@ -1,7 +1,7 @@
 # ie-331-project
 Class Project IE 331
 # Question 1
-**Row Counts per table**
+**Row Counts per Table**
 **Business Question:**
 How much data does each table contain, and where do most of the records come from in the business?
 **Approach/alternatives**
@@ -10,6 +10,19 @@ By doing a simple query and count the number of rows per table, I was able to un
 The results show that the most rows and data is consisted in the geolocation, order_items, and order_payments tables. Revealing that a lot of the data is based on transaction and the zip codes. Looking back at my queries in question 1, I should have coded more for geolocation and the order tables as they are more important. My original thoughts were to include the tables of customers, orders, products, and sellers.
 **Limitations**
 Row counts per table just provided the quantity of the data. Quality or accurate data, and relationships between tables or columns is not found using row counts.
+
+**NULL Rates for Key Columns**
+**Business Question:**
+Are there missing values in key columns that could affect analysis?
+**Approach/alternatives**
+We used a query to check for null values for the following key columns: order_id,customer_id, product_id, and seller_id.
+A CTE was used to count total rows per table and the number of nulls for each of the key columns. An alternative, as I previously mentioned in the first part of question one (row counts per table) could have been to consider key columns in other tables such as the geolocation or order_items tables.
+**Results**
+Results in the output show that all key ID columns have no null values. The order, customer, product, and seller tables are connected well.
+**Limitations**
+This query checks for any missing values, but we do not know if there is incorrect data.
+
+
 
 
 
