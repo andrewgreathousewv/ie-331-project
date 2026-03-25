@@ -28,7 +28,7 @@ Are there any ophaned foreign keys that could affect analysis?
 **Approach/Alternatives**
 Using the same columns in the second part of question one, which are order_id,customer_id, product_id, and seller_id, a query was made to find orphaned foreign keys. A CTE was used performing LEFT JOIN's between related tables and identified rows where the joined table returned NULL. An alternative could have been to use different columns under the other tables in the dataset.
 **Results**
-Results show that there are no orphaned foreign keys within thekey relationships. The relationship between the order, customer, product, and seller tablesa are reliable.
+Results show that there are no orphaned foreign keys within the key relationships. The relationship between the order, customer, product, and seller tables are reliable.
 **Limitations**
 The query only has 4 key columns. Many other columns in the dataset could possibly have orphaned foreign keys but were not included in this part.
 
