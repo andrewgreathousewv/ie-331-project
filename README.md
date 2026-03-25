@@ -32,6 +32,26 @@ Results show that there are no orphaned foreign keys within the key relationship
 **Limitations**
 The query only has 4 key columns. Many other columns in the dataset could possibly have orphaned foreign keys but were not included in this part.
 
+**Date Range Coverage and Gaps**
+**Business Question**
+Does the dataset cover a consistent and reliable time period? Do gap days affect analysis?
+**Approach/Alternatives**
+Made a query for the date range by finding the first and last order dates. Missing days, or gap days,  are considered days where an order was not placed. Order timestamps helped me do this. An alternative could have been to just count the start and end date.
+**Results**
+The results show that the date range, which are the start and end dates are 11/05/2023 and 12/17/2025. The total gap days during this range is 140 missing days. 
+**Limitations**
+This query does not tell us exactly which days are gap days or why they occur.
+
+**Duplicate Detection**
+**Business Question**
+Could data analysis be affected by duplicates in key tables?
+**Approach/Alternatives**
+To detect a duplicate, we want to find how many times the same ID appears in key tables. Unlike the other parts of this question, I decided to use more than just the sellers,customers,products, and orders tables. I played around with this query and decided to include the order_reviews table. Using CTEs, I was able to group by each ID, count how many times each appears and filter for IDs that appear more than once using the having count function. Then, I could find how many duplicates were in each table. An alternative would have been to find duplicates in all the tables of the olist dataset.
+**Results**
+The results were interesting. While the sellers, products, orders, and customers tables had no duplicates, the order_reviews table had 789 duplicates. This made me realize that I should have been using different columns and tables throughout the whole first question to get a better idea and understanding of where what we are looking for is occurring in the dataset. I made a mistake by not going into depth in the output of the first query of the first section and know that I could’ve used different tables or columns to find more informative results during this question.
+**Limitations**
+This only checks duplicates based on IDs, not duplicate rows with different IDs. Also, we do not know why the duplicates exist.
+
 
 
 
