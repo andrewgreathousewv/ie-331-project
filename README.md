@@ -78,6 +78,10 @@ This only checks duplicates based on IDs, not duplicate rows with different IDs.
 This query investigated whether customers return to the shop again after their first purchase. The hard part of this query was that Olist gives every order a new customer_id, so if you join that you'll never find a repeating customer. To fix this I had to use the help of claude to join through the customers table to get customer_unique_id, which tracks the customer through new orders. Once that was solved, we flagged whether each customer placed more orders withing 30,60, and 90 days of their first purchase. The results were 0.68, 1.03, and 1.24 percent, which seems low but makes sense in
 
 **Query 2: Seller Scorecard**
+**Which sellers perform best when considering revenue, delivery performance, customer satisfaction, and cancellations?**
+
+The question was whether revenue sellers are actually the best all around performers. Four metrics were completerly seperated revenue, on time delivery rate, average review score, and cancellation rate then combined into a composite rank score. We chose rank averaging over weighted scoring because the rights weights depends on business priorities that would need stakehorder input, and over raw metric averaging because the four metrics are on incompatible scales. Results showed that top revenue sellers frequently have poor reviews or high cancellation rates, confirming that revenue alone is a misleading proxy for seller quality. The main caveat is that sellers with very few orders can score perfectly by chance, so a minimum volume threshold should be applied before acting on the rankings.
+
 
 **Query 3: A,B,C inventory classification**
 **Which products fall into A, B, and C categories based on revenue contribution?**
